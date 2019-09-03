@@ -6,10 +6,8 @@ function App() {
   const [data, setData] = useState();
   const [loading, setLoading ] = useState(false);
   const [filteredData, setFilteredData] = useState();
-
   const [count, setCount] = useState(1)
-
-  console.log(data)
+  const [topClick, setTopClick] = useState(true);
 
   const fetchJson = async (url) => {
     const response = await fetch(url);
@@ -41,6 +39,14 @@ function App() {
     } else setFilteredData(data);
   }  
 
+  const sortByTop = () => {
+    if(topClick)  {
+      const result = data.filter(hotel => hotel.stars > 4);
+      setFilteredData(result); 
+    } else setFilteredData(data);
+    setTopClick(!topClick);
+  }
+
   return (
     <>
       {loading && 
@@ -64,17 +70,12 @@ function App() {
               label="Top Class"
               color="#777"
               icon={<i className="fa fa-star" aria-hidden="true"></i>}
-              onClick={ () => {
-                const result = data.filter(hotel => hotel.stars > 4);
-                setFilteredData(result);
-              }}
+              onClick={ () => sortByTop()}
             />
              <Button 
-              label="Reset Filters"
+              label="Reset"
               color="#777"
-              onClick={ () => {
-                setFilteredData(data);
-              }}
+              onClick={ () => setFilteredData(data)}
             />
           </Box>
           <Grid
